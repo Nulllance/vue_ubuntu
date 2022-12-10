@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .display {
+        /* display: none; */
+        background-color: rebeccapurple;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h2 :class="[{display: isDisplay}, redColor]">{{message}}</h2>
+      <h2 :class="[redColor, display]">hi</h2>
+      <h2 :style="{backgroundColor: 'red', fontSize:'30px'}">helloworld</h2>
+      <h2 :[name]="'aaa'">dynamically bind</h2>
+      //直接绑定属性
+      <h2 v-bind="infos">直接绑定属性</h2>
+      <button @click="changeDisplay">show</button>
+    </div>
+  </body>
+  <script src="lib/vue.js"></script>
+  <script>
+    const app = Vue.createApp({
+      // template: ``,
+      data() {
+        return {
+          infos: { name: "lance", age: 18 },
+          message: "helloworld",
+          redColor: "red",
+          display: "display",
+          isDisplay: true,
+          name: "title",
+        };
+      },
+      methods: {
+        changeDisplay() {
+          console.log("click!");
+          setInterval(() => {
+            this.isDisplay = !this.isDisplay;
+          }, 500);
+        },
+      },
+    });
+
+    app.mount("#app");
+  </script>
+</html>

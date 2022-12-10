@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>当前计数 ：<span class="counter"></span></h2>
+      <button class="add">+1</button>
+      <button class="sub">-1</button>
+    </div>
+    <script>
+      //1.获取dom
+      const h2El = document.querySelector("h2");
+      const addBtnEl = document.querySelector(".add");
+      const subBtnEl = document.querySelector(".sub");
+      const counter = document.querySelector(".counter");
+
+      //2.设置变量
+      var count = 0;
+      counter.textContent = count;
+      //3.监听按键的点击
+      addBtnEl.onclick = function () {
+        count++;
+        counter.textContent = count;
+      };
+      subBtnEl.onclick = function () {
+        count--;
+        counter.textContent = count;
+      };
+    </script>
+  </body>
+</html>

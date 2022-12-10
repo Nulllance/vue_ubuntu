@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <title>BookCart</title>
+
+    <style type="text/css">
+      .sumPrice {
+        display: none;
+      }
+      .active {
+        background-color: antiquewhite;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <table v-bind:class="tg">
+           -->
+      <div class="row row-cols-3" v-if="!booksEmpty">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th
+                  class="col"
+                  v-for="bookTitleItem in booksTitle"
+                  :key="bookTitleItem.id"
+                >
+                  {{bookTitleItem}}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="book, index in books"
+                :key="books.id"
+                @click="activeItem(index)"
+                :class="{active: index === activateIndex}"
+              >
+                <td>{{index+1}}</td>
+                <td v-for="(value, key) in book">
+                  <button
+                    v-if="key=='buyNumber'"
+                    @click="decrement(book, index)"
+                    :disabled="isBooksBtnsDisabled[index]"
+                  >
+                    -
+                  </button>
+                  <template v-if="key=='price'">
+                    {{ formatPrice(value) }}
+                  </template>
+                  <template v-else> {{ value }} </template>
+                  <button
+                    v-if="key=='buyNumber'"
+                    @click="increment(book, index)"
+                  >
+                    +
+                  </button>
+                </td>
+                <td><button @click="removeBook(book, index)">移除</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>{{sumString}}{{formatPrice(booksPrice)}}</h2>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+    <template v-else>
+      <h2>购物车为空~</h2>
+    </template>
+
+    <script src="lib/vue.js"></script>
+    <script src="data/data.js"></script>
+    <script>
+      console.log(books);
+      const app = Vue.createApp({
+        data() {
+          return {
+            // btnDisable: true,
+            sumPrice: "sumPrice",
+            // tg: "tg",
+            booksTitle: booksTitle,
+            books: books,
+            isBooksBtnsDisabled: [true, true, true, true],
+            isBooksEmpty: false,
+            sum: 0,
+            sumString: "总价:",
+            activateIndex: 0,
+          };
+        },
+        methods: {
+          removeBook(book, index) {
+            //删除书籍 method1
+            //this.books = this.books.filter((b) => b !== book);
+            //method2
+            this.books.splice(index, 1);
+          },
+          decrement(book, index) {
+            if (book.buyNumber > 1) {
+              book.buyNumber--;
+              if (book.buyNumber == 1) {
+                this.isBooksBtnsDisabled[index] = true;
+              }
+            }
+          },
+          increment(book, index) {
+            if (++book.buyNumber > 1) {
+              this.isBooksBtnsDisabled[index] = false;
+            }
+          },
+          formatPrice(price) {
+            return " ￥ " + price;
+          },
+          activeItem(index) {
+            this.activateIndex = index;
+          },
+        },
+        computed: {
+          booksEmpty() {
+            return this.books.length > 0
+              ? this.isBooksEmpty
+              : !this.isBooksEmpty;
+          },
+          booksPrice() {
+            // var tempPrice = 0;
+            // this.books.forEach((element) => {
+            //   tempPrice += element.price * element.buyNumber;
+            // });
+            // console.log(books);
+            // return tempPrice;
+
+            return this.books.reduce((preValue, item) => {
+              return preValue + item.price * item.buyNumber;
+            }, 0);
+          },
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ajax</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>{{message}}</h2>
+      <h3>当前您所在位置：{{city}}</h3>
+      <h3>气温：{{temperature}}</h3>
+      <h3>天气：{{weather}}</h3>
+      <h3>发布时间: {{time}}</h3>
+      <button @click="getWeather">获取天气</button>
+      <button @click="getIp">获取当前IP</button>
+    </div>
+  </body>
+  <script src="lib/vue.js"></script>
+
+  <script>
+    const app = Vue.createApp({
+      // template: ``,
+      data() {
+        return {
+          message: "你好主人，",
+          city: "未知位置",
+          temperature: "未知温度",
+          weather: "未知天气",
+          time: "",
+        };
+      },
+      methods: {
+        async getIp() {
+          console.log("click!");
+          let url =
+            "https://restapi.amap.com/v3/ip?ip=45.78.1.54&output=json&key=e5e54579e6f39c4df1ca675b7a4f3d86";
+          let respones = await fetch(url);
+          if (respones.ok) {
+            console.log(respones.ip);
+            let json = await respones.json();
+            console.log(json);
+          } else {
+            console.log("HTTP-Error", respones.status);
+          }
+        },
+        async getWeather() {
+          console.log("click!");
+          let url =
+            "https://restapi.amap.com/v3/weather/weatherInfo?key=e5e54579e6f39c4df1ca675b7a4f3d86&city=440113";
+          let respones = await fetch(url);
+          if (respones.ok) {
+            let json = await respones.json();
+            let info = json.lives[0];
+            console.log(info);
+            this.setInfo(info);
+          } else {
+            console.log("HTTP-Error:" + respones.status);
+          }
+        },
+        setInfo(info) {
+          this.city = info.city;
+          this.temperature = info.temperature;
+          this.weather = info.weather;
+          this.time = info.reporttime;
+        },
+      },
+    });
+    app.mount("#app");
+  </script>
+</html>
